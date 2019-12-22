@@ -32,6 +32,7 @@ def detectAndDisplay(frame):
         cropped_2 = image[y:y+h,x:x+w]
     (kp2, des2) = orb.detectAndCompute(cropped_2, None)
 
+    # if there is a face
     if faces is not ():
         # cropping out the face from the frame
         for (x,y,w,h) in faces:
@@ -55,15 +56,22 @@ def detectAndDisplay(frame):
 
 
 if __name__ == '__main__':
+
+    
     cap = cv2.VideoCapture(0)
+    
     while True:
+        # capturing from the camera and flipping the image
         ret, frame = cap.read()
+        frame = cv2.flip(frame,1) 
+        # implementing out function
         fr, matches, img = detectAndDisplay(frame)
 
         output_string = "Matches = " + str(matches)
         cv2.putText(fr, output_string, (fr.shape[0]//3,fr.shape[1]//10), cv2.FONT_HERSHEY_COMPLEX, 1, (75, 163, 41), 2)
 
-        if matches > 200 and matches != 0:
+        # if the length of the matches overcomes 200 
+        if matches > 250 and matches != 0:
             plt.imshow(img)
             plt.show()
 
